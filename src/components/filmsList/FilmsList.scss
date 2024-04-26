@@ -1,0 +1,53 @@
+.start-page {
+  text-align: start;
+  padding: 29px 18px;
+  position: relative;
+
+   h2 {
+    margin: 0;
+    font-size: 35px;
+    letter-spacing: 0.04em;
+   }
+
+   ul {
+    display: flex;
+    gap: 12px;
+    list-style-type: none;
+    padding: 0;
+    margin: 33px 0;
+    width: 31.3%;
+    overflow: hidden;
+   }
+
+    button {
+    font-size: 20px;
+    padding: 11px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    color: #fff;
+    background-color: transparent;
+  }
+
+  .button_active {
+    background-color: #fff;
+    color: #000;
+  }
+
+   .button-right {
+    position: absolute;
+    top: 42%;
+    left: 32%;
+    background-image: url('../../assets/arrow_icon.svg');
+    background-size: 55%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 50px;
+    width: 50px;
+  }
+}
+

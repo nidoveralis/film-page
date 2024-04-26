@@ -27,7 +27,6 @@ class Api {
       },
     })
     .then(res => this._getResponseData(res))
-    .then(data => console.log(data))
   }
 
   getSinleMovies(data) {

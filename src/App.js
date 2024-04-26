@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import './App.css';
+import './App.scss';
 
-import FilmList from './components/filmsList/filmsList';
+import FilmsList from './components/filmsList/FilmsList';
 
 import { api } from './utils/MainApi';
 
@@ -13,13 +13,14 @@ function App() {
     api.getMovies().then(data => {
       setList(data);
     });
-  }, [])
+  }, []);
+
   return (
     <div className="App">
       <header className='header'>
-        <h1>Кино справочник</h1>
+        <h1 className='header__title'>Кино справочник</h1>
       </header>
-      <FilmList list={list}/>
+      <FilmsList list={list}/>
     </div>
   );
 }
