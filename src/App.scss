@@ -6,8 +6,7 @@ body {
 .App {
   text-align: center;
   background-color: #171717;
-  width: 100%;
-  height: 100vh;
+  min-width: 100%;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -24,4 +23,9 @@ body {
     font-size: 34px;
     letter-spacing: 0.06em;
   }
+}
+
+p, h1, h2, h3, ul, li {
+  margin: 0;
+  padding: 0;
 }
