@@ -1,17 +1,15 @@
 import React, { useState, useRef } from 'react';
+import { Link } from "react-router-dom";
 
 import './FilmsList.scss';
 
-import Poster from '../../assets/poster.jpg'
+import { api } from '../../utils/MainApi';
 
-function FilmsList (list) {
+function FilmsList (listProps) {
   const sliderRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-
-  const handleOpenCard = (item) =>{
-    window.location.href = `/${item}`;
-  };
+  const [list, setList] = useState(listProps);
+  const [activeIndex, setActiveIndex] = useState(list?.page-1);
+console.log(listProps, list);
   const handleOpenPage = (index) => {
     setActiveIndex(index);
   };
@@ -19,6 +17,10 @@ function FilmsList (list) {
     const slider = sliderRef.current;
     slider.scrollLeft += 65;
     setActiveIndex(activeIndex + 1);
+    console.log(list.page);
+    api.getMovies(list.page + 1).then(data => {
+      setList(data);
+    });
   };
 
   return (
@@ -26,7 +28,7 @@ function FilmsList (list) {
       <h2>Лучшие фильмы</h2>
       <div className='button-cotaiten'>
         <ul className='list_page'ref={sliderRef}>
-          {list.list?.docs?.map((item, index) => (
+          {list?.docs?.map((item, index) => (
             <li key={index}>
               <button
                 onClick={() => handleOpenPage(index)}
@@ -41,16 +43,19 @@ function FilmsList (list) {
       </div>
 
       <ul className='list_cards'>
-        {list.list?.docs?.map((item, index) => (
+        {list?.docs?.map((item, index) => (
             <li key={index}>
-              <div className='card' onClick={() => handleOpenCard(item.id)}>
-                <img src={Poster} alt="Постер фильма" />
+              <Link
+                to={`/${item.id}`}
+                className='card'
+              >
+                <img src={item.poster.url} alt="Постер фильма" />
                 <div className='card__text'>
                   <h3>{item.names[0].name}</h3>
                   <p className='card__rating'>{item.rating.kp.toFixed(1)}</p>
                   <p>{item.year}</p>
                 </div>
-              </div>
+              </Link>
             </li>
           ))}
       </ul>
