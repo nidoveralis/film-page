@@ -1,45 +1,66 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 import './FilmsList.scss';
 
 import { api } from '../../utils/MainApi';
 
-function FilmsList (listProps) {
-  const sliderRef = useRef(null);
-  const [list, setList] = useState(listProps);
-  const [activeIndex, setActiveIndex] = useState(list?.page-1);
-console.log(listProps, list);
+function FilmsList () {
+  //const sliderRef = useRef(null);
+  const [list, setList] = useState();
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [isLoader, setIsLoader] = useState(false);
+
+  const getPage = (page) => {
+    setIsLoader(true);
+    api.getMovies(page).then(data => {
+      setList(data);
+      setIsLoader(false);
+    });
+  }
+
   const handleOpenPage = (index) => {
-    setActiveIndex(index);
+    setActiveIndex(index + 1);
+    getPage(index + 1);
   };
   const handleClickRight = () => {
-    const slider = sliderRef.current;
-    slider.scrollLeft += 65;
+    //const slider = sliderRef.current;
+    //slider.scrollLeft += 65;
     setActiveIndex(activeIndex + 1);
-    console.log(list.page);
-    api.getMovies(list.page + 1).then(data => {
-      setList(data);
-    });
+    getPage(activeIndex + 1);
   };
 
+  useEffect(()=>{
+    if(!list) {
+      setIsLoader(true);
+      api.getMovies(activeIndex).then(data => {
+        setList(data);
+        setIsLoader(false);
+      });
+    }
+  // eslint-disable-next-line
+  }, []);
   return (
-    <section className='start-page'>
+    <>
+     <section className='start-page'>
+     {isLoader && <div className='loader' style={{top: 70}} />}
       <h2>Лучшие фильмы</h2>
-      <div className='button-cotaiten'>
-        <ul className='list_page'ref={sliderRef}>
-          {list?.docs?.map((item, index) => (
+      {list &&
+        <>
+        <div className='button-cotaiten'>
+        <ul className='list_page'>
+        {list?.docs?.map((item, index) => (
             <li key={index}>
               <button
                 onClick={() => handleOpenPage(index)}
-                className={activeIndex === index ? 'button_active' : ''}
+                className={activeIndex - 1 === index ? 'button_active' : ''}
               >
                 {index + 1}
               </button>
             </li>
-          ))}
+        ))}
         </ul>
-        <button className='button_right' onClick={handleClickRight} />
+        <button className='button_right' onClick={handleClickRight} disabled={activeIndex === 5} />
       </div>
 
       <ul className='list_cards'>
@@ -59,7 +80,10 @@ console.log(listProps, list);
             </li>
           ))}
       </ul>
+      </>
+      }
     </section>
+    </>
   )
 }
 

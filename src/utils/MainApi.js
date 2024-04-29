@@ -23,14 +23,20 @@ class Api {
       headers: this._headers,
     })
     .then(res => this._getResponseData(res))
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   getSinleMovies(data) {
-    return fetch(`${this._baseUrl}/movies/${data}`, {
+    return fetch(`${this._baseUrl}/${data}`, {
       method: 'GET',
       headers: this._headers,
     })
     .then(res => this._getResponseData(res))
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
 };
